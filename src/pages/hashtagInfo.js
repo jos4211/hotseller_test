@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import CategoryBox from "../container/catagoryBox";
+import CategoryBox from "../component/catagoryBox";
 import CategoryData from "../component/categoryData";
 import CategoryBtn from "../component/categoryBtn";
+import * as tagData from "../lib/api/getData";
 import addComma from "../utility/addComma";
 import styled from "styled-components";
 import { Button } from "react-bootstrap";
@@ -72,16 +73,14 @@ function HashtagInfo({ match, history }) {
 
   useEffect(async () => {
     setErrorPage(false);
-    setData(null);
-    try {
-      const tagName = match.params.name;
-      const res = import(
-        `../lib/hotseller-dataset/pretty/hashtag_info/${tagName}`
-      );
+    const tagName = match.params.name;
 
-      await res.then((res) => setData(res));
-    } catch (e) {
+    const resultData = await tagData.infoData(tagName);
+
+    if (!resultData) {
       setErrorPage(true);
+    } else {
+      setData(resultData);
     }
   }, [match]);
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as tagData from "../lib/api/getData";
 import CategoryData from "../component/categoryData";
 import CategoryBtn from "../component/categoryBtn";
-import CategoryBox from "../container/catagoryBox";
+import CategoryBox from "../component/catagoryBox";
 import styled from "styled-components";
 
 /*
@@ -19,6 +19,7 @@ const CategoryContainer = styled.div`
 function Main() {
   // json에서 가져온 데이터 저장 하기 state
   const [trendData, setTrendData] = useState(tagData.trendData);
+  const [topHashtagData, setTopHashtagData] = useState(tagData.topHashtagData);
 
   // 카테고리버튼에 어떤 버튼이 활성화 되있는지 확인하기 위한 state
   const [gapActiveBtn, setGapActiveBtn] = useState("day1_gap");
@@ -47,9 +48,11 @@ function Main() {
   useEffect(async () => {
     // json 데이터 가져오기
     const getTrendData = await tagData.trendData;
+    const hetTopHashtagData = await tagData.topHashtagData;
 
     // 가져온 데이터를 trendData state에 저장
     setTrendData(getTrendData);
+    setTopHashtagData(hetTopHashtagData);
   }, []);
 
   // gap 카테고리 버튼 클릭시
@@ -65,6 +68,14 @@ function Main() {
   return (
     <>
       <h1>main</h1>
+
+      <CategoryContainer>
+        <h2> TOP 포스팅 순위 </h2>
+        <CategoryBox>
+          <CategoryData data={topHashtagData.post_cnt} category="topPostCnt" />
+        </CategoryBox>
+      </CategoryContainer>
+
       <CategoryContainer>
         <h2>포스팅 증가량 순위</h2>
         <CategoryBox>

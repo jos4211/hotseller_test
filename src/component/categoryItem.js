@@ -26,6 +26,7 @@ const ItemBox = styled(Button)`
   &:hover {
     background-color: rgb(222, 222, 231);
 
+    // 버튼에 마우스를 갖다대면 데이터의 정보를 띄워준다.
     .tagContent {
       display: inline-block;
       width: 200px;
@@ -46,8 +47,12 @@ const ItemBox = styled(Button)`
   }
 `;
 
-const TagName = styled.span`
+const TagName = styled.p`
   font-weight: bold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 170px;
+  overflow: hidden;
 `;
 
 // value : json에서 뽑아 map을 돌린 데이터
@@ -59,8 +64,9 @@ function MainTrendItem({ value, number, category }) {
 
   useEffect(() => {
     setState(() => {
-      // 포스팅 증가량,증가율 순위
-      if (category === "posting") {
+      // TOP 포스팅 순위
+      if (category === "topPostCnt") {
+        console.log("value", value);
         return (
           <Link to={"/" + value.hashtag}>
             <ItemBox>
@@ -68,6 +74,23 @@ function MainTrendItem({ value, number, category }) {
                 #{number}. {value.hashtag}
               </TagName>
               <div className="tagContent">
+                <p>태그 이름 : {value.hashtag}</p>
+                <p>포스팅 수 : {addComma(value.post_cnt)}개</p>
+              </div>
+            </ItemBox>
+          </Link>
+        );
+
+        // 포스팅 증가량,증가율 순위
+      } else if (category === "posting") {
+        return (
+          <Link to={"/" + value.hashtag}>
+            <ItemBox>
+              <TagName>
+                #{number}. {value.hashtag}
+              </TagName>
+              <div className="tagContent">
+                <p>태그 이름 : {value.hashtag}</p>
                 <p>포스팅 수 : {addComma(value.post_cnt)}개</p>
                 <p>최근 증가량 : {value.post_gap}개</p>
                 <p>최근 증가율 : {value.post_rate}%</p>
@@ -84,6 +107,7 @@ function MainTrendItem({ value, number, category }) {
             <ItemBox>
               <TagName>{value.hashtag}</TagName>
               <div className="tagContent">
+                <p>태그 이름 : {value.hashtag}</p>
                 <p>포스팅 수 : {addComma(value.post_cnt)}개</p>
                 <p>발견 날짜 : {value.add_date}</p>
                 <p>분석 시작 시간 : {value.check_start_time}</p>
@@ -102,6 +126,7 @@ function MainTrendItem({ value, number, category }) {
                 #{number}. {value.hashtag}
               </TagName>
               <div className="tagContent">
+                <p>태그 이름 : {value.hashtag}</p>
                 <p>포스팅 수 : {addComma(value.post_cnt)}개</p>
               </div>
             </ItemBox>
@@ -116,6 +141,7 @@ function MainTrendItem({ value, number, category }) {
               #{number}. {value.username}
             </TagName>
             <div className="tagContent">
+              <p>아이디 : {value.username}</p>
               <p>점수 : {addComma(value.score)}점</p>
               <p>팔로워 수 : {addComma(value.follower_cnt)}명</p>
               <p>팔로우 수 : {addComma(value.follow_cnt)}명</p>
@@ -131,6 +157,7 @@ function MainTrendItem({ value, number, category }) {
           <ItemBox>
             <TagName>{value.check_date}</TagName>
             <div className="tagContent">
+              <p>날짜 : {value.check_date}</p>
               <p>포스팅 수 : {addComma(value.post_cnt)}개</p>
             </div>
           </ItemBox>
@@ -142,6 +169,7 @@ function MainTrendItem({ value, number, category }) {
           <ItemBox>
             <TagName>{value.url}</TagName>
             <div className="tagContent">
+              <p>url : {value.url}</p>
               <p>좋아요 수 : {addComma(value.like_cnt)}개</p>
               <p>댓글 수 : {addComma(value.comment_cnt)}개</p>
               <p>영상 수 : {addComma(value.mov_cnt)}개</p>
